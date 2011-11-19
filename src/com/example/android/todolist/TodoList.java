@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -26,8 +26,8 @@ public class TodoList extends Activity {
 	
 	private ListView myListView;
 	private EditText myEditText;
-	private ArrayList<String> todoItems;
-	private ArrayAdapter<String> arrayAdapter;
+	private ArrayList<TodoItem> todoItems;
+	private TodoItemAdapter arrayAdapter;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class TodoList extends Activity {
         myListView = (ListView) findViewById(R.id.myListView);
         myEditText = (EditText) findViewById(R.id.myEditText);
         
-        todoItems = new ArrayList<String>();
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.todolist_item, todoItems);
+        todoItems = new ArrayList<TodoItem>();
+        arrayAdapter = new TodoItemAdapter(this, R.layout.todolist_item, todoItems);
         
         myListView.setAdapter(arrayAdapter);
         
@@ -48,7 +48,7 @@ public class TodoList extends Activity {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if(event.getAction() == KeyEvent.ACTION_DOWN){
 					if(keyCode == KeyEvent.KEYCODE_ENTER){
-						todoItems.add(myEditText.getText().toString());
+						todoItems.add(new TodoItem(myEditText.getText().toString()));
 						myEditText.setText("");
 						arrayAdapter.notifyDataSetChanged();
 						
